@@ -1,4 +1,6 @@
-﻿namespace hrmsapi
+﻿using Shared.JWT;
+
+namespace hrmsapi
 {
     public class Startup
     {
@@ -15,6 +17,7 @@
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,10 +30,12 @@
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseRouting();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
